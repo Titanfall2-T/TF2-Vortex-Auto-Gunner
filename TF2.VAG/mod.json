@@ -1,0 +1,22 @@
+{
+    "Name": "Vortex Auto Gunner",
+    "Description": "A mod for Titanfall 2 which makes fighting Ion as Monarch a lot easier.",
+    "Version": "1.0.0",
+
+    "LoadPriority": "0",
+    "ConVars": [
+        {
+            "Name": "vag_enabled",
+            "DefaultValue": "0"
+        }
+    ],
+    "Scripts": [
+        {
+            "Path": "vag.gnut",
+            "RunOn": "CLIENT && MP",
+            "ClientCallback": {
+                "After": "vag_Init"
+            }
+        }
+    ]
+}
