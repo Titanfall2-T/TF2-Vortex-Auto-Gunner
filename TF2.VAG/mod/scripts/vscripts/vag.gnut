@@ -1,7 +1,17 @@
 global function vag_Init
 
+bool isFiring = false
+
 void function vag_Init()
 {
+    for( int key = 0; key < 132; key++ )
+    {
+        if( GetKeyBinding( key ) == "+attack" )
+        {
+            RegisterButtonPressedCallback( key, vagFiringState)
+            RegisterButtonReleasedCallback( key, vagStopFiringState )
+        }
+    }
     if( GetMapName() == "mp_lobby" )
     {
         return
@@ -32,9 +42,22 @@ void function vag_Thread()
                 if( results.hitEnt != null && results.hitEnt.GetActiveWeapon() != null && results.hitEnt.GetActiveWeapon().GetWeaponClassName() == "mp_titanweapon_vortex_shield_ion" )
                 {
                     //print("[VAG][DEBUG] TIME : " + Time() + " VORTEX SHIELD OUT")
-                    GetLocalClientPlayer().ClientCommand("-attack")
+                    GetLocalClientPlayer().ClientCommand( "-attack" )
+                }
+                if( isFiring == true && results.hitEnt != null && results.hitEnt.GetActiveWeapon() != null && results.hitEnt.GetActiveWeapon().GetWeaponClassName() != "mp_titanweapon_vortex_shield_ion" )
+                {
+                    GetLocalClientPlayer().ClientCommand( "+attack" )
                 }
             }
         }
     }
+}
+
+void function vagFiringState( int buttonEnum ) {
+    isFiring = true
+}
+
+void function vagStopFiringState( int buttonEnum ) {
+    isFiring = false
+    GetLocalClientPlayer().ClientCommand( "-attack" )
 }
